@@ -42,6 +42,8 @@
     '';
 
     initLua = ''
+      -- !! LSP configuration
+      -- Nix
       vim.lsp.enable("nixd")
 
       -- Rust
@@ -57,9 +59,32 @@
       vim.lsp.enable("rust_analyzer")
 
       -- Python
-      vim.lsp.enable("ruff")
+      vim.lsp.enable("ruff", {
+        init_options = {
+          settings = {
+          },
+        },
+      })
       vim.lsp.enable("pyrefly")
 
+      -- Configure autoformatting
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("lsp_autoformatting", {}),
+        callback = function(event)
+          local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
+          -- Ideally this would do some kind of feature check, but the one documented on the
+          -- neovim website doesn't seem to work for rust-analyzer or ruff ¯\_(ツ)_/¯
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            group = vim.api.nvim_create_augroup("lsp_autoformatting", {clear=false}),
+            buffer = event.buf,
+            callback = function()
+              vim.lsp.buf.format({ bufnr = event.buf, id = client.id, timeout_ms = 1000 })
+            end,
+          })
+        end,
+      })
+
+      -- !! Diagnostic UI
       require("tiny-inline-diagnostic").setup({
         preset = "modern",
         options = {
