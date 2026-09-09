@@ -75,5 +75,7 @@ in
 
     # Webcam viewer for convenience
     pkgs.kdePackages.kamoso
+
+    pkgs.zotero
   ];
 }
