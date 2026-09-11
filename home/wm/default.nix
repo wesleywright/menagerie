@@ -145,5 +145,7 @@ in
         titlebar = false;
       };
     };
+
+    systemd.xdgAutostart = true;
   };
 }
