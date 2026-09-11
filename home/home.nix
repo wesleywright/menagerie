@@ -17,6 +17,7 @@
     ./ssh.nix
     ./terminal.nix
     ./utilities
+    ./wm
   ];
 
   home = {
