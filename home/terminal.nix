@@ -15,7 +15,10 @@
 
       theme = "iTerm2 Solarized Dark";
 
-      window-decoration = "client";
+      window-decoration = "none";
+      window-padding-color = "extend";
+      window-padding-x = 16;
+      window-padding-y = 10;
       window-theme = "ghostty";
     };
   };
