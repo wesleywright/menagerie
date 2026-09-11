@@ -94,6 +94,7 @@
         "LG Electronics 27GN950 101NTMXE1251" = {
           adaptive_sync = "on";
           scale = "1.25";
+          bg = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Path/contents/images/2560x1600.jpg fill";
         };
       };
 
