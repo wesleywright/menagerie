@@ -1,4 +1,24 @@
 { pkgs, ... }:
+let
+  # Solarized colors
+  # lint:ignore
+  base03 = "002b36";
+  base02 = "073642";
+  base01 = "586e75";
+  base00 = "657b83";
+  base0 = "839496";
+  base1 = "93a1a1";
+  base2 = "eee8d5";
+  base3 = "fdf6e3";
+  yellow = "b58900";
+  orange = "cb4b16";
+  red = "dc322f";
+  magenta = "d33682";
+  violet = "6c71c4";
+  blue = "268bd2";
+  cyan = "2aa198";
+  green = "859900";
+in
 {
   home.packages = [
     # Add clipboard functionality for some apps.
@@ -61,6 +81,26 @@
         }
       ];
 
+      colors =
+        let
+          background = "#${base03}";
+          text = "#${base2}";
+          makeClass = borderColor: {
+            background = background;
+            text = text;
+            border = borderColor;
+            childBorder = borderColor;
+            indicator = borderColor;
+          };
+        in
+        {
+          background = background;
+          focused = makeClass "#${base01}";
+          focusedInactive = makeClass "#${base02}";
+          unfocused = makeClass "#${base02}";
+          placeholder = makeClass "#${base02}";
+        };
+
       floating = {
         criteria = [
           { app_id = "1password"; }
@@ -86,7 +126,7 @@
       #     - Normal and prompt foreground: base2
       #     - Prompt background: base01
       #     - Selected foreground: green
-      menu = "${pkgs.wmenu}/bin/wmenu-run -f 'Input Mono Regular 12' -l 8 -p 'Launch:' -N 002b36 -n eee8d5 -M 586e75 -m eee8d5 -S 002b36 -s 859900";
+      menu = "${pkgs.wmenu}/bin/wmenu-run -f 'Input Mono Regular 12' -l 8 -p 'Launch:' -N ${base03} -n ${base2} -M ${base01} -m ${base2} -S ${base03} -s ${green}";
 
       modifier = "Mod4";
 
@@ -101,7 +141,7 @@
       terminal = "ghostty";
 
       window = {
-        border = 0;
+        border = 2;
         titlebar = false;
       };
     };
