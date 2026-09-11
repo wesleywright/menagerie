@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   environment.systemPackages = [
@@ -18,10 +18,6 @@
       extraCompatPackages = [ pkgs.proton-ge-bin ];
     };
   };
-
-  # May allow some services to use real time scheduling, which works better for
-  # gaming.
-  security.rtkit.enable = true;
 
   # Setting CPU governor settings only works when the user is in this group
   users.users.naptime.extraGroups = [ "gamemode" ];

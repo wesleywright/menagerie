@@ -14,6 +14,7 @@
     ./locale.nix
     ./networking.nix
     ./nix.nix
+    ./security.nix
     ./ssh.nix
     ./steam.nix
     ./udev.nix
