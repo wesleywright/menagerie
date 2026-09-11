@@ -67,6 +67,7 @@ in
     style = ./waybar.css;
   };
 
+  services.network-manager-applet.enable = true;
   # Needed by waybar for getting currently playing status.
   services.playerctld.enable = true;
 
