@@ -45,7 +45,6 @@
       };
     };
     style = ./waybar.css;
-    systemd.enable = true;
   };
 
   # Needed by waybar for getting currently playing status.
@@ -55,11 +54,11 @@
     enable = true;
     wrapperFeatures.gtk = true;
 
-    config = rec {
+    config = {
       bars = [
-        #{
-        #  command = "waybar";
-        #}
+        {
+          command = "waybar";
+        }
       ];
 
       floating = {
