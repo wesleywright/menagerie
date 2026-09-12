@@ -1,4 +1,11 @@
-{ ... }:
+{ pkgs, ... }:
+let
+  confirm-command =
+    command: prompt:
+    pkgs.writeShellScript "confirm-command" ''
+      ${pkgs.zenity}/bin/zenity --question --text "${prompt}" --default-cancel && ${command}
+    '';
+in
 {
   programs.waybar = {
     enable = true;
@@ -7,6 +14,7 @@
         layer = "top";
         position = "top";
         modules-left = [
+          "custom/power"
           "sway/workspaces"
           "sway/mode"
           "wlr/taskbar"
@@ -25,6 +33,21 @@
           format = "{:%FT%T%Ez}";
           interval = 1;
           tooltip = false;
+        };
+
+        "custom/power" = {
+          format = "⏻";
+          tooltip = false;
+          menu = "on-click";
+          menu-file = ./waybar-power-menu.xml;
+          menu-actions = {
+            "suspend" = "systemctl suspend";
+            "logout" = confirm-command "${pkgs.sway}/bin/swaymsg exit" "Are you sure you want to log out?";
+            "reboot" =
+              confirm-command "${pkgs.systemd}/bin/systemctl reboot" "Are you sure you want to reboot?";
+            "shutdown" =
+              confirm-command "${pkgs.systemd}/bin/systemctl poweroff" "Are you sure you want to shut down?";
+          };
         };
 
         "mpris" = {
