@@ -158,7 +158,7 @@ in
       #     - Normal and prompt foreground: base2
       #     - Prompt background: base01
       #     - Selected foreground: green
-      menu = "${pkgs.wmenu}/bin/wmenu-run -f 'Input Mono Regular 12' -l 8 -p 'Launch:' -N ${base03} -n ${base2} -M ${base01} -m ${base2} -S ${base03} -s ${green}";
+      menu = "${pkgs.wmenu}/bin/wmenu-run -f 'Input Mono Regular 12' -l 8 -p 'Launch:' -N ${base03} -n ${base0} -M ${base02} -m ${base1} -S ${green} -s ${base2}";
 
       output = {
         "LG Electronics 27GN950 101NTMXE1251" = {
