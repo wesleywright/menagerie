@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 let
   # Solarized colors
   # lint:ignore
@@ -18,6 +18,21 @@ let
   blue = "268bd2";
   cyan = "2aa198";
   green = "859900";
+
+  modifier = "Mod4";
+  workspaces = {
+    "1" = "1: web & chat";
+    "2" = "2";
+    "3" = "3";
+    "4" = "4";
+    "5" = "5";
+  };
+  workspaceBindings = lib.mergeAttrsList (
+    lib.mapAttrsToList (name: value: {
+      "${modifier}+${name}" = "workspace ${value}";
+      "${modifier}+Shift+${name}" = "move container to workspace ${value}";
+    }) workspaces
+  );
 in
 {
   home.packages = [
@@ -76,6 +91,8 @@ in
     wrapperFeatures.gtk = true;
 
     config = {
+      inherit modifier;
+
       bars = [
         {
           command = "waybar";
@@ -102,6 +119,8 @@ in
           placeholder = makeClass "#${base02}";
         };
 
+      defaultWorkspace = "workspace number ${workspaces."1"}";
+
       floating = {
         criteria = [
           { app_id = "1password"; }
@@ -118,6 +137,8 @@ in
         smartBorders = "on";
       };
 
+      keybindings = lib.mkOptionDefault workspaceBindings;
+
       # Runs a wmenu prompt with:
       #  - A font setting of Input Mono Regular, 12pt.
       #  - 8 lines of suggestions.
@@ -128,8 +149,6 @@ in
       #     - Prompt background: base01
       #     - Selected foreground: green
       menu = "${pkgs.wmenu}/bin/wmenu-run -f 'Input Mono Regular 12' -l 8 -p 'Launch:' -N ${base03} -n ${base2} -M ${base01} -m ${base2} -S ${base03} -s ${green}";
-
-      modifier = "Mod4";
 
       output = {
         "LG Electronics 27GN950 101NTMXE1251" = {
