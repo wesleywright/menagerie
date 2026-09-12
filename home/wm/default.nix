@@ -125,8 +125,6 @@ in
         criteria = [
           { app_id = "1password"; }
           { app_id = "lollypop"; }
-          { app_id = "org.signal.Signal"; }
-          { sandbox_app_id = "com.discordapp.Discord"; }
         ];
       };
 
