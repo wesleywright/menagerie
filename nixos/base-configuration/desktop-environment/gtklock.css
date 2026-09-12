@@ -1,0 +1,5 @@
+@define-color foreground #fdf6e3;
+
+window {
+  color: @foreground;
+}

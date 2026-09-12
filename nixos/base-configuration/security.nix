@@ -1,6 +1,7 @@
 { ... }:
 {
   security.pam.services."*".enableGnomeKeyring = true;
+  security.pam.services.gtklock.enable = true;
 
   security.polkit.enable = true;
 

@@ -6,7 +6,7 @@
     ./audio.nix
     ./boot.nix
     ./command-not-found.nix
-    ./desktop-environment.nix
+    ./desktop-environment
     ./fonts.nix
     ./flatpak.nix
     ./ios.nix
