@@ -21,11 +21,11 @@ let
 
   modifier = "Mod4";
   workspaces = {
-    "1" = "1: web & chat";
-    "2" = "2";
-    "3" = "3";
-    "4" = "4";
-    "5" = "5";
+    "1" = "1: default";
+    "2" = "2: research";
+    "3" = "3: work";
+    "4" = "4: games";
+    "5" = "5: miscellaneous";
   };
   workspaceBindings = lib.mergeAttrsList (
     lib.mapAttrsToList (name: value: {
