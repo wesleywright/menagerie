@@ -1,7 +1,10 @@
 { ... }:
 
 {
-  programs.sway.enable = true;
+  programs.sway = {
+    enable = true;
+    extraPackages = [ ];
+  };
 
   services.desktopManager.plasma6.enable = true;
   services.displayManager.sddm.enable = true;
