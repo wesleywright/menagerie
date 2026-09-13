@@ -30,7 +30,7 @@ with solarized;
       inherit modifier;
       assigns = {
         ${workspaces."1"} = [
-          { app_id = "com.discordapp.Discord"; }
+          { sandbox_app_id = "com.discordapp.Discord"; }
           { app_id = "org.signal.Signal"; }
         ];
         ${workspaces."4"} = [
