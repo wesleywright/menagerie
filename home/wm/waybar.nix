@@ -25,13 +25,14 @@ in
           "mpris"
           "privacy"
           "tray"
-          "clock"
+          "custom/clock"
         ];
 
-        "clock" = {
-          format = "{:%FT%T%Ez}";
+        "custom/clock" = {
+          format = "{}";
           interval = 1;
           tooltip = false;
+          exec = pkgs.writeShellScript "get-current-time-for-waybar" "date '+%k:%M:%S %Z on %A, %B %-d, %Y'";
         };
 
         "custom/power" = {
