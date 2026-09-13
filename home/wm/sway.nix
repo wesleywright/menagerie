@@ -41,12 +41,17 @@ in
 
     config = {
       inherit modifier;
+      assigns = {
+        ${workspaces."1"} = [
+          { app_id = "com.discordapp.Discord"; }
+          { app_id = "org.signal.Signal"; }
+        ];
+        ${workspaces."4"} = [
+          { class = "steam"; }
+        ];
+      };
 
-      bars = [
-        {
-          command = "waybar";
-        }
-      ];
+      bars = [ { command = "waybar"; } ];
 
       colors =
         let
