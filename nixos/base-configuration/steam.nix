@@ -1,11 +1,22 @@
 { pkgs, ... }:
 
+let
+  rungame = pkgs.writeShellApplication {
+    name = "rungame";
+    text = ''
+      env LD_PRELOAD="" \
+        ${pkgs.gamemode}/bin/gamemoderun \
+        ${pkgs.gamescope}/bin/gamescope \
+          --adaptive-sync \
+          --fullscreen \
+          --rt \
+          --max-scale 1 \
+          --expose-wayland \
+        "$@"
+    '';
+  };
+in
 {
-  environment.systemPackages = [
-    # Make gamescope for available for games that need it.
-    pkgs.gamescope
-  ];
-
   # This seems to help with fully recognizing DualSense controllers.
   hardware.uinput.enable = true;
 
@@ -16,6 +27,7 @@
     steam = {
       enable = true;
       extraCompatPackages = [ pkgs.proton-ge-bin ];
+      extraPackages = [ rungame ];
     };
   };
 
