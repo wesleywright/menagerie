@@ -35,10 +35,11 @@ let
   );
 in
 {
-  wayland.windowManager.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
+  home.packages = [
+    pkgs.sway-contrib.grimshot
+  ];
 
+  wayland.windowManager.sway = {
     config = {
       inherit modifier;
       assigns = {
@@ -124,5 +125,6 @@ in
     };
 
     systemd.xdgAutostart = true;
+    wrapperFeatures.gtk = true;
   };
 }
