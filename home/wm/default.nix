@@ -45,6 +45,13 @@ with solarized;
 
           progress-bar-height = 16;
           progress-color = "${base1}ff";
+
+          default-timeout = 15;
+          idle-timeout = 60;
+        };
+
+        critical = {
+          default-timeout = 0;
         };
       };
     };
