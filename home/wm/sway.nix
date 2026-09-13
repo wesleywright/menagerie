@@ -24,6 +24,8 @@ with solarized;
   ];
 
   wayland.windowManager.sway = {
+    enable = true;
+
     config = {
       inherit modifier;
       assigns = {
