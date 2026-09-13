@@ -55,22 +55,22 @@ in
 
       colors =
         let
-          background = "#${base03}";
-          text = "#${base2}";
-          makeClass = borderColor: {
+          makeClass = foreground: background: {
             background = background;
-            text = text;
-            border = borderColor;
-            childBorder = borderColor;
-            indicator = borderColor;
+            text = foreground;
+            border = background;
+            childBorder = background;
+            indicator = background;
           };
+          inactive = makeClass "#${base1}" "#${base02}";
         in
         {
-          background = background;
-          focused = makeClass "#${base01}";
-          focusedInactive = makeClass "#${base02}";
-          unfocused = makeClass "#${base02}";
-          placeholder = makeClass "#${base02}";
+          background = "#${base03}";
+          focused = makeClass "#${base2}" "#${base01}";
+          focusedInactive = inactive;
+          placeholder = inactive;
+          unfocused = inactive;
+          urgent = makeClass "#${base1}" "#${orange}";
         };
 
       defaultWorkspace = "workspace number ${workspaces."1"}";
@@ -80,6 +80,11 @@ in
           { app_id = "1password"; }
           { app_id = "lollypop"; }
         ];
+      };
+
+      fonts = {
+        names = [ "Input Mono" ];
+        size = 12.0;
       };
 
       gaps = {
