@@ -138,6 +138,13 @@ with solarized;
         smartBorders = "on";
       };
 
+      input = {
+        # Use caps as escape on caterpie's built-in keyboard.
+        "1:1:AT_Translated_Set_2_keyboard" = {
+          xkb_options = "caps:escape";
+        };
+      };
+
       keybindings = lib.mkOptionDefault (
         workspaceBindings
         // {
