@@ -21,6 +21,33 @@ let
     names = [ "Input Mono" ];
     size = 12.0;
   };
+
+  # Runs a wmenu command (either wmenu or wmenu-run) with common styling options.
+  wmenuCommand =
+    program:
+    with solarized;
+    "${pkgs.wmenu}/bin/${program} -f 'Input Mono Regular 12' -N ${base03} -n ${base0} -M ${base02} -m ${base1} -S ${green} -s ${base2} -i";
+  wmenu = wmenuCommand "wmenu";
+  wmenu-run = wmenuCommand "wmenu-run";
+
+  powerMenu = pkgs.writeShellScript "power-menu" ''
+    CHOICE=$(
+      echo -e 'Suspend\nLog out\nReboot\nShutdown\n' |
+      ${wmenu} -p 'Run which power command?' -l 4
+    )
+
+    function confirm {
+      ANSWER=$(echo -e "No\nYes\n" | ${wmenu} -p "Are you sure you want to $1?" -l 2)
+      [[ $ANSWER =~ ^Yes$ ]]
+    }
+
+    case "$CHOICE" in
+      *Suspend) systemctl suspend ;;
+      *"Log out") confirm "log out" && swaymsg exit ;;
+      *Reboot) confirm "reboot" && systemctl reboot ;;
+      *Poweroff) confirm "shutdown" && systemctl poweroff ;;
+    esac
+  '';
 in
 with solarized;
 {
@@ -111,7 +138,13 @@ with solarized;
         smartBorders = "on";
       };
 
-      keybindings = lib.mkOptionDefault workspaceBindings;
+      keybindings = lib.mkOptionDefault (
+        workspaceBindings
+        // {
+          "${modifier}+l" = "exec loginctl lock-session";
+          "${modifier}+p" = "exec ${powerMenu}";
+        }
+      );
 
       # Runs a wmenu prompt with:
       #  - A font setting of Input Mono Regular, 12pt.
@@ -122,7 +155,7 @@ with solarized;
       #     - Normal and prompt foreground: base2
       #     - Prompt background: base01
       #     - Selected foreground: green
-      menu = "${pkgs.wmenu}/bin/wmenu-run -f 'Input Mono Regular 12' -l 8 -p 'Launch:' -N ${base03} -n ${base0} -M ${base02} -m ${base1} -S ${green} -s ${base2}";
+      menu = "${wmenu-run} -p 'Launch:' -l 8";
 
       output = {
         "LG Electronics 27GN950 101NTMXE1251" = {
