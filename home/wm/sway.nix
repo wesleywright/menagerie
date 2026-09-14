@@ -157,13 +157,26 @@ with solarized;
       #     - Selected foreground: green
       menu = "${wmenu-run} -p 'Launch:' -l 8";
 
-      output = {
-        "LG Electronics 27GN950 101NTMXE1251" = {
-          adaptive_sync = "on";
-          scale = "1.25";
-          bg = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Path/contents/images/2560x1600.jpg fill";
+      output =
+        let
+          background = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Path/contents/images/2560x1600.jpg fill";
+          caterpieDisplay = {
+            inherit background;
+            adaptive_sync = "on";
+            scale = "1.6";
+          };
+        in
+        {
+          "LG Electronics 27GN950 101NTMXE1251" = {
+            inherit background;
+            adaptive_sync = "on";
+            scale = "1.25";
+          };
+
+          # For some reason, sway and swaybg see different names for the built-in Framework display
+          "BOE NE135A1M-NY1" = caterpieDisplay;
+          "BOE NE135A1M-NY1 Unknown" = caterpieDisplay;
         };
-      };
 
       terminal = "ghostty";
 
