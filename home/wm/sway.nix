@@ -16,18 +16,21 @@ let
       "${modifier}+Shift+${name}" = "move container to workspace ${value}";
     }) workspaces
   );
+
+  fonts = {
+    names = [ "Input Mono" ];
+    size = 12.0;
+  };
 in
 with solarized;
 {
-  home.packages = [
-    pkgs.sway-contrib.grimshot
-  ];
-
   wayland.windowManager.sway = {
     enable = true;
 
     config = {
+      inherit fonts;
       inherit modifier;
+
       assigns = {
         ${workspaces."1"} = [
           { sandbox_app_id = "com.discordapp.Discord"; }
@@ -38,7 +41,39 @@ with solarized;
         ];
       };
 
-      bars = [ { command = "waybar"; } ];
+      bars = [
+        {
+          inherit fonts;
+
+          position = "top";
+          statusCommand = "while date +'%k:%M:%S %Z on %A, %B %-d, %Y'; do sleep 1; done";
+          trayPadding = 8;
+
+          extraConfig = ''
+            height 32
+          '';
+
+          colors =
+            let
+              workspaceColors = text: {
+                background = "#${base03}";
+                border = "#${base03}";
+                text = "#${text}";
+              };
+            in
+            {
+              background = "#${base03}";
+              separator = "#${base0}";
+              statusline = "#${base0}";
+              focusedStatusline = "#${base1}";
+
+              focusedWorkspace = workspaceColors green;
+              activeWorkspace = workspaceColors base2;
+              inactiveWorkspace = workspaceColors base1;
+              urgentWorkspace = workspaceColors orange;
+            };
+        }
+      ];
 
       colors =
         let
@@ -67,11 +102,6 @@ with solarized;
           { app_id = "1password"; }
           { app_id = "lollypop"; }
         ];
-      };
-
-      fonts = {
-        names = [ "Input Mono" ];
-        size = 12.0;
       };
 
       gaps = {

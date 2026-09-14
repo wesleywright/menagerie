@@ -6,10 +6,12 @@ with solarized;
 {
   imports = [
     ./sway.nix
-    ./waybar.nix
   ];
 
   home.packages = [
+    # Take screenshots
+    pkgs.sway-contrib.grimshot
+
     # Add clipboard functionality for some apps.
     pkgs.wl-clipboard
   ];
