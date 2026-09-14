@@ -5,7 +5,6 @@
     ./1password.nix
     ./audio.nix
     ./boot.nix
-    ./command-not-found.nix
     ./desktop-environment
     ./fonts.nix
     ./flatpak.nix
