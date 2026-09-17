@@ -198,6 +198,7 @@ with solarized;
           caterpieDisplay = {
             inherit background;
             adaptive_sync = "on";
+            allow_tearing = "yes";
             scale = "1.6";
           };
         in
@@ -205,6 +206,7 @@ with solarized;
           "LG Electronics 27GN950 101NTMXE1251" = {
             inherit background;
             adaptive_sync = "on";
+            allow_tearing = "yes";
             scale = "1.25";
           };
 
