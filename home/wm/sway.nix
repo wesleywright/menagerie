@@ -122,7 +122,7 @@ with solarized;
           urgent = makeClass "#${base1}" "#${orange}";
         };
 
-      defaultWorkspace = "workspace number ${workspaces."1"}";
+      defaultWorkspace = "workspace ${workspaces."1"}";
 
       floating = {
         criteria = [
