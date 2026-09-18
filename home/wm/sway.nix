@@ -158,7 +158,7 @@ with solarized;
 
       keybindings =
         let
-          brightness = "${pkgs.brightnessctl}/bin/brightnessctl --class backlight set";
+          brightness = "${pkgs.brightnessctl}/bin/brightnessctl --class backlight --exponent=3 --min-value=8000 set";
           pamixer = "${pkgs.pamixer}/bin/pamixer";
           playerctl = "${pkgs.playerctl}/bin/playerctl";
         in
@@ -176,8 +176,8 @@ with solarized;
             "XF86AudioNext" = "exec ${playerctl} next";
             "XF86AudioPrev" = "exec ${playerctl} previous";
 
-            "XF86MonBrightnessDown" = "exec ${brightness} 6.25%-";
-            "XF86MonBrightnessUp" = "exec ${brightness} +6.25%";
+            "XF86MonBrightnessDown" = "exec ${brightness} 3.25%-";
+            "XF86MonBrightnessUp" = "exec ${brightness} +3.25%";
           }
         );
 
