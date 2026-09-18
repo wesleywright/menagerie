@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./backlight.nix
     ./hardware-configuration.nix
   ];
 

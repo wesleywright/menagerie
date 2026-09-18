@@ -145,13 +145,25 @@ with solarized;
         };
       };
 
-      keybindings = lib.mkOptionDefault (
-        workspaceBindings
-        // {
-          "${modifier}+l" = "exec loginctl lock-session";
-          "${modifier}+p" = "exec ${powerMenu}";
-        }
-      );
+      keybindings =
+        let
+          brightness = "${pkgs.brightnessctl}/bin/brightnessctl --class backlight set";
+          pamixer = "${pkgs.pamixer}/bin/pamixer";
+        in
+        lib.mkOptionDefault (
+          workspaceBindings
+          // {
+            "${modifier}+l" = "exec loginctl lock-session";
+            "${modifier}+p" = "exec ${powerMenu}";
+
+            "XF86AudioLowerVolume" = "exec ${pamixer} --decrease 1";
+            "XF86AudioMute" = "exec ${pamixer} --toggle-mute";
+            "XF86AudioRaiseVolume" = "exec ${pamixer} --increase 1";
+
+            "XF86MonBrightnessDown" = "exec ${brightness} 6.25%-";
+            "XF86MonBrightnessUp" = "exec ${brightness} +6.25%";
+          }
+        );
 
       # Runs a wmenu prompt with:
       #  - A font setting of Input Mono Regular, 12pt.
