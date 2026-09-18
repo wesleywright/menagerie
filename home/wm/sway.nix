@@ -160,6 +160,7 @@ with solarized;
         let
           brightness = "${pkgs.brightnessctl}/bin/brightnessctl --class backlight set";
           pamixer = "${pkgs.pamixer}/bin/pamixer";
+          playerctl = "${pkgs.playerctl}/bin/playerctl";
         in
         lib.mkOptionDefault (
           workspaceBindings
@@ -170,6 +171,10 @@ with solarized;
             "XF86AudioLowerVolume" = "exec ${pamixer} --decrease 1";
             "XF86AudioMute" = "exec ${pamixer} --toggle-mute";
             "XF86AudioRaiseVolume" = "exec ${pamixer} --increase 1";
+
+            "XF86AudioPlay" = "exec ${playerctl} play-pause";
+            "XF86AudioNext" = "exec ${playerctl} next";
+            "XF86AudioPrev" = "exec ${playerctl} previous";
 
             "XF86MonBrightnessDown" = "exec ${brightness} 6.25%-";
             "XF86MonBrightnessUp" = "exec ${brightness} +6.25%";
