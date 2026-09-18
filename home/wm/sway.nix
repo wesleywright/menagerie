@@ -143,6 +143,17 @@ with solarized;
         "1:1:AT_Translated_Set_2_keyboard" = {
           xkb_options = "caps:escape";
         };
+
+        "type:touchpad" = {
+          # "Clickfinger" settings allow you to use one/two/three
+          # fingers to do a left/right/middle click, repsectively.
+          click_method = "clickfinger";
+          clickfinger_button_map = "lrm";
+
+          # Enables tap-to-click, using the same finger mapping as above.
+          tap = "enabled";
+          tap_button_map = "lrm";
+        };
       };
 
       keybindings =
