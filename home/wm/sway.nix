@@ -65,6 +65,7 @@ with solarized;
         ];
         ${workspaces."4"} = [
           { class = "steam"; }
+          { class = "steam_app.*"; }
         ];
       };
 
