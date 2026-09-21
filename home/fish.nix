@@ -243,6 +243,11 @@
     };
 
     interactiveShellInit = ''
+      # Disables the greeting prompt fish displays on shell startup. This can be done imperatively
+      # by running `set -U fish_greeting`, but controlling it via home-manager allows the setting
+      # to automatically propagate to all devices that I use.
+      set --global fish_greeting ""
+
       # Re-renders the prompt immediately before running a command. Used here to ensure that
       # timestamps reflect the time when a command was actually run.
       set --global fish_transient_prompt 1
