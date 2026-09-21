@@ -48,6 +48,10 @@ let
       *Poweroff) confirm "shutdown" && systemctl poweroff ;;
     esac
   '';
+
+  barStatusCommand = pkgs.writers.writePython3 "sway-status-command" { } (
+    builtins.readFile ./sway-status-command.py
+  );
 in
 with solarized;
 {
@@ -74,7 +78,7 @@ with solarized;
           inherit fonts;
 
           position = "top";
-          statusCommand = "while date +'%k:%M:%S %Z on %A, %B %-d, %Y'; do sleep 1; done";
+          statusCommand = "${barStatusCommand}";
           trayPadding = 8;
 
           extraConfig = ''
