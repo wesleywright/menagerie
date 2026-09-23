@@ -4,7 +4,7 @@
   nix = {
     gc = {
       automatic = true;
-      options = "--delete-older-than 60d";
+      options = "--delete-older-than 14d";
     };
 
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
