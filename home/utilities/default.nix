@@ -21,23 +21,9 @@
     attrset;
 
   customScripts = makeCustomScripts {
-    checksum-music = {
-      runtimeInputs = [
-        pkgs.coreutils
-        pkgs.findutils
-        pkgs.python3Packages.tqdm
-      ];
-    };
     notes = {
       runtimeInputs = [
         pkgs.neovim
-      ];
-    };
-    sync-music-to-ios = {
-      runtimeInputs = [
-        pkgs.coreutils
-        pkgs.ifuse
-        pkgs.rsync
       ];
     };
   };
