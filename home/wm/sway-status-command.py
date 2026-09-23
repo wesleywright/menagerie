@@ -7,7 +7,7 @@ POWER_SUPPLY_DIRECTORY = Path("/sys/class/power_supply")
 
 
 def find_battery_directory() -> Path | None:
-    return next(POWER_SUPPLY_DIRECTORY.glob("BAT*"))
+    return next(POWER_SUPPLY_DIRECTORY.glob("BAT*"), None)
 
 
 def read_battery_charge(path: Path) -> int:
