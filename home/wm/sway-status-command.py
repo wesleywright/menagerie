@@ -22,7 +22,7 @@ def get_battery_percent(directory: Path) -> int:
 
 def format_current_time() -> str:
     now = datetime.now(tz=UTC).astimezone()
-    return now.strftime("%k:%M:%S %Z on %A, %B %-d, %Y")
+    return now.strftime("%-H:%M:%S %Z on %A, %B %-d, %Y")
 
 
 def print_status(*, battery_directory: Path | None) -> None:
