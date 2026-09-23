@@ -50,6 +50,14 @@
                 networking.hostName = name;
               }
             )
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
+              home-manager.users.naptime = import ./home/home.nix;
+            }
           ];
         };
     in
@@ -61,16 +69,6 @@
 
           # Autoformats Nix files.
           pkgs.nixfmt
-        ];
-      };
-
-      homeConfigurations."naptime" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-
-        modules = [
-          plasma-manager.homeModules.plasma-manager
-
-          ./home/home.nix
         ];
       };
 
