@@ -14,6 +14,7 @@
     ./office.nix
     ./ssh.nix
     ./terminal.nix
+    ./ui.nix
     ./utilities
     ./wm
   ];
