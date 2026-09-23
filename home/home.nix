@@ -26,11 +26,6 @@
     stateVersion = "24.05";
   };
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    permittedInsecurePackages = [ "python3.11-youtube-dl-2021.12.17" ];
-  };
-
   programs = {
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
