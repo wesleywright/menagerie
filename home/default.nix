@@ -6,7 +6,6 @@
     ./browser.nix
     ./direnv.nix
     ./editors.nix
-    ./ffxiv.nix
     ./fish.nix
     ./git.nix
     ./music.nix
