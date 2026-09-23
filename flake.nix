@@ -49,7 +49,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.naptime = import ./home/home.nix;
+              home-manager.users.naptime = import ./home;
             }
           ];
         };
