@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # Allows mounting iOS devices.
   services.usbmuxd.enable = true;
   environment.systemPackages = [

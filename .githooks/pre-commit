@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-nixfmt --check *.nix **/*.nix
+alejandra --check .

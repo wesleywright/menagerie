@@ -3,25 +3,24 @@
   lib,
   pkgs,
   ...
-}:
-
-let
-  makeCustomScript =
-    { name, runtimeInputs }:
+}: let
+  makeCustomScript = {
+    name,
+    runtimeInputs,
+  }:
     pkgs.writeShellApplication {
       name = name;
       runtimeInputs = runtimeInputs;
       text = builtins.readFile (./. + "/${name}.sh");
     };
 
-  makeCustomScripts =
-    attrset:
+  makeCustomScripts = attrset:
     lib.attrsets.mapAttrsToList (
-      name: arguments: makeCustomScript (arguments // { name = name; })
-    ) attrset;
+      name: arguments: makeCustomScript (arguments // {name = name;})
+    )
+    attrset;
 
   customScripts = makeCustomScripts {
-
     checksum-music = {
       runtimeInputs = [
         pkgs.coreutils
@@ -50,8 +49,7 @@ let
       ];
     };
   });
-in
-{
+in {
   home.packages =
     customScripts
     ++ gamingScripts

@@ -1,3 +1,3 @@
-{ ... }: {
+{...}: {
   naptime.gaming.enable = true;
 }

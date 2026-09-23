@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   programs.gtklock = {
     enable = true;
     config = {
@@ -17,7 +15,7 @@
   };
   programs.sway = {
     enable = true;
-    extraPackages = [ ];
+    extraPackages = [];
   };
 
   services.displayManager.sddm.enable = true;

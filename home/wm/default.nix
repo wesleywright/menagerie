@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
     ./fnott.nix
     ./sway.nix
@@ -22,14 +21,12 @@
     # Integrates gtklock with `loginctl lock-session` and `systemctl suspend`.
     swayidle = {
       enable = true;
-      events =
-        let
-          lockCommand = "${pkgs.gtklock}/bin/gtklock";
-        in
-        {
-          "before-sleep" = lockCommand;
-          "lock" = lockCommand;
-        };
+      events = let
+        lockCommand = "${pkgs.gtklock}/bin/gtklock";
+      in {
+        "before-sleep" = lockCommand;
+        "lock" = lockCommand;
+      };
     };
   };
 }

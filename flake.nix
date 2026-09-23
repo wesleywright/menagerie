@@ -17,70 +17,64 @@
     };
   };
 
-  outputs =
-    inputs@{
-      nixpkgs,
-      home-manager,
-      ...
-    }:
-    let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+  outputs = inputs @ {
+    nixpkgs,
+    home-manager,
+    ...
+  }: let
+    system = "x86_64-linux";
+    pkgs = import nixpkgs {inherit system;};
 
-      allHosts = nixpkgs.lib.attrNames (builtins.readDir ./hosts);
+    allHosts = nixpkgs.lib.attrNames (builtins.readDir ./hosts);
 
-      makeHostConfig =
-        hostname:
-        let
-          optionalModule =
-            name:
-            let
-              path = ./hosts/${hostname}/${name};
-            in
-            nixpkgs.lib.optional (builtins.pathExists path) path;
-          optionsModules = [
-            ./options
-            ./hosts/${hostname}
-          ];
-          nixosModules = [ ./nixos ] ++ optionalModule "nixos";
-          homeManagerImports = [ ./home ] ++ optionalModule "home";
-          homeManagerModules = [
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.sharedModules = optionsModules;
-              home-manager.users.naptime = {
-                imports = homeManagerImports;
-              };
-            }
-          ];
-        in
-        nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs;
-            hostname = hostname;
+    makeHostConfig = hostname: let
+      optionalModule = name: let
+        path = ./hosts/${hostname}/${name};
+      in
+        nixpkgs.lib.optional (builtins.pathExists path) path;
+      optionsModules = [
+        ./options
+        ./hosts/${hostname}
+      ];
+      nixosModules = [./nixos] ++ optionalModule "nixos";
+      homeManagerImports = [./home] ++ optionalModule "home";
+      homeManagerModules = [
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.sharedModules = optionsModules;
+          home-manager.users.naptime = {
+            imports = homeManagerImports;
           };
-
-          modules = optionsModules ++ nixosModules ++ homeManagerModules;
-        };
+        }
+      ];
     in
-    {
-      devShell.${system} = pkgs.mkShell {
-        packages = [
-          # Provides a Nix LSP implementation.
-          pkgs.nixd
+      nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs;
+          hostname = hostname;
+        };
 
-          # Autoformats Nix files.
-          pkgs.nixfmt
-        ];
+        modules = optionsModules ++ nixosModules ++ homeManagerModules;
       };
+  in {
+    devShell.${system} = pkgs.mkShell {
+      packages = [
+        # Provides a Nix LSP implementation.
+        pkgs.nixd
 
-      nixosConfigurations = builtins.listToAttrs (
-        map (name: {
-          name = name;
-          value = makeHostConfig name;
-        }) allHosts
-      );
+        # Autoformats Nix files.
+        pkgs.alejandra
+      ];
     };
+
+    nixosConfigurations = builtins.listToAttrs (
+      map (name: {
+        name = name;
+        value = makeHostConfig name;
+      })
+      allHosts
+    );
+  };
 }

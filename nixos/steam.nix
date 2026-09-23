@@ -3,9 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-
-let
+}: let
   rungame = pkgs.writeShellApplication {
     name = "rungame";
     text = ''
@@ -20,8 +18,7 @@ let
         "$@"
     '';
   };
-in
-{
+in {
   config = lib.mkIf config.naptime.gaming.enable {
     # This seems to help with fully recognizing DualSense controllers.
     hardware.uinput.enable = true;
@@ -32,12 +29,12 @@ in
 
       steam = {
         enable = true;
-        extraCompatPackages = [ pkgs.proton-ge-bin ];
-        extraPackages = [ rungame ];
+        extraCompatPackages = [pkgs.proton-ge-bin];
+        extraPackages = [rungame];
       };
     };
 
     # Setting CPU governor settings only works when the user is in this group
-    users.users.naptime.extraGroups = [ "gamemode" ];
+    users.users.naptime.extraGroups = ["gamemode"];
   };
 }

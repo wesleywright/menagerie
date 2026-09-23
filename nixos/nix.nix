@@ -1,13 +1,11 @@
-{ inputs, ... }:
-
-{
+{inputs, ...}: {
   nix = {
     gc = {
       automatic = true;
       options = "--delete-older-than 14d";
     };
 
-    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+    nixPath = ["nixpkgs=${inputs.nixpkgs}"];
 
     settings = {
       download-buffer-size = 1073741824; # One gibibyte

@@ -8,9 +8,7 @@
   pkgs,
   modulesPath,
   ...
-}:
-
-{
+}: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series
@@ -23,23 +21,22 @@
     "uas"
     "sd_mod"
   ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
-  boot.extraModulePackages = [ ];
+  boot.initrd.kernelModules = [];
+  boot.kernelModules = ["kvm-amd"];
+  boot.extraModulePackages = [];
 
   fileSystems."/" = {
     device = "/dev/mapper/caterpie";
     fsType = "btrfs";
-    options = [ "subvol=root" ];
+    options = ["subvol=root"];
   };
 
-  boot.initrd.luks.devices."caterpie".device =
-    "/dev/disk/by-uuid/b438860f-eb83-4ac7-b024-d308a758e1c7";
+  boot.initrd.luks.devices."caterpie".device = "/dev/disk/by-uuid/b438860f-eb83-4ac7-b024-d308a758e1c7";
 
   fileSystems."/home" = {
     device = "/dev/mapper/caterpie";
     fsType = "btrfs";
-    options = [ "subvol=home" ];
+    options = ["subvol=home"];
   };
 
   fileSystems."/nix" = {
@@ -60,7 +57,7 @@
     ];
   };
 
-  swapDevices = [ ];
+  swapDevices = [];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

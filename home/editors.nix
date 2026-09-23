@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   programs.neovim = {
     defaultEditor = true;
     enable = true;
@@ -44,7 +42,15 @@
     initLua = ''
       -- !! LSP configuration
       -- Nix
-      vim.lsp.enable("nixd")
+      vim.lsp.enable("nixd", {
+        settings = {
+          nixd = {
+            formatting = {
+              command = { "alejandra ." },
+            },
+          },
+        },
+      })
 
       -- Rust
       vim.lsp.config("rust_analyzer", {

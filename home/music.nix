@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   home.packages = [
     # Open source drum machine
     pkgs.hydrogen

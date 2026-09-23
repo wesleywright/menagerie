@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   programs.fish = {
     enable = true;
 
@@ -234,8 +232,8 @@
                   }
                   return substr(stamp, 1, length(stamp) - 1)
               }
-              { 
-                  print hmTime($0) 
+              {
+                  print hmTime($0)
               }
           '
         '';

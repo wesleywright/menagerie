@@ -1,5 +1,8 @@
-{ lib, pkgs, ... }:
-let
+{
+  lib,
+  pkgs,
+  ...
+}: let
   solarized = import ./solarized.nix;
 
   modifier = "Mod4";
@@ -14,19 +17,18 @@ let
     lib.mapAttrsToList (name: value: {
       "${modifier}+${name}" = "workspace ${value}";
       "${modifier}+Shift+${name}" = "move container to workspace ${value}";
-    }) workspaces
+    })
+    workspaces
   );
 
   fonts = {
-    names = [ "Input Mono" ];
+    names = ["Input Mono"];
     size = 12.0;
   };
 
   # Runs a wmenu command (either wmenu or wmenu-run) with common styling options.
-  wmenuCommand =
-    program:
-    with solarized;
-    "${pkgs.wmenu}/bin/${program} -f 'Input Mono Regular 12' -N ${base03} -n ${base0} -M ${base02} -m ${base1} -S ${green} -s ${base2} -i";
+  wmenuCommand = program:
+    with solarized; "${pkgs.wmenu}/bin/${program} -f 'Input Mono Regular 12' -N ${base03} -n ${base0} -M ${base02} -m ${base1} -S ${green} -s ${base2} -i";
   wmenu = wmenuCommand "wmenu";
   wmenu-run = wmenuCommand "wmenu-run";
 
@@ -49,51 +51,48 @@ let
     esac
   '';
 
-  barStatusCommand = pkgs.writers.writePython3 "sway-status-command" { } (
+  barStatusCommand = pkgs.writers.writePython3 "sway-status-command" {} (
     builtins.readFile ./sway-status-command.py
   );
 in
-with solarized;
-{
-  wayland.windowManager.sway = {
-    enable = true;
+  with solarized; {
+    wayland.windowManager.sway = {
+      enable = true;
 
-    config = {
-      inherit fonts;
-      inherit modifier;
+      config = {
+        inherit fonts;
+        inherit modifier;
 
-      assigns = {
-        ${workspaces."1"} = [
-          { sandbox_app_id = "com.discordapp.Discord"; }
-          { app_id = "org.signal.Signal"; }
-        ];
-        ${workspaces."4"} = [
-          { class = "steam"; }
-          { class = "steam_app.*"; }
-        ];
-      };
+        assigns = {
+          ${workspaces."1"} = [
+            {sandbox_app_id = "com.discordapp.Discord";}
+            {app_id = "org.signal.Signal";}
+          ];
+          ${workspaces."4"} = [
+            {class = "steam";}
+            {class = "steam_app.*";}
+          ];
+        };
 
-      bars = [
-        {
-          inherit fonts;
+        bars = [
+          {
+            inherit fonts;
 
-          position = "top";
-          statusCommand = "${barStatusCommand}";
-          trayPadding = 8;
+            position = "top";
+            statusCommand = "${barStatusCommand}";
+            trayPadding = 8;
 
-          extraConfig = ''
-            height 32
-          '';
+            extraConfig = ''
+              height 32
+            '';
 
-          colors =
-            let
+            colors = let
               workspaceColors = text: {
                 background = "#${base03}";
                 border = "#${base03}";
                 text = "#${text}";
               };
-            in
-            {
+            in {
               background = "#${base03}";
               separator = "#${base0}";
               statusline = "#${base0}";
@@ -104,11 +103,10 @@ with solarized;
               inactiveWorkspace = workspaceColors base1;
               urgentWorkspace = workspaceColors orange;
             };
-        }
-      ];
+          }
+        ];
 
-      colors =
-        let
+        colors = let
           makeClass = foreground: background: {
             background = background;
             text = foreground;
@@ -117,8 +115,7 @@ with solarized;
             indicator = background;
           };
           inactive = makeClass "#${base1}" "#${base02}";
-        in
-        {
+        in {
           background = "#${base03}";
           focused = makeClass "#${base2}" "#${base01}";
           focusedInactive = inactive;
@@ -127,78 +124,76 @@ with solarized;
           urgent = makeClass "#${base1}" "#${orange}";
         };
 
-      defaultWorkspace = "workspace ${workspaces."1"}";
+        defaultWorkspace = "workspace ${workspaces."1"}";
 
-      floating = {
-        criteria = [
-          { app_id = "1password"; }
-          { app_id = "lollypop"; }
-        ];
-      };
-
-      gaps = {
-        inner = 12;
-
-        smartGaps = "on";
-        smartBorders = "on";
-      };
-
-      input = {
-        # Use caps as escape on caterpie's built-in keyboard.
-        "1:1:AT_Translated_Set_2_keyboard" = {
-          xkb_options = "caps:escape";
+        floating = {
+          criteria = [
+            {app_id = "1password";}
+            {app_id = "lollypop";}
+          ];
         };
 
-        "type:touchpad" = {
-          # "Clickfinger" settings allow you to use one/two/three
-          # fingers to do a left/right/middle click, repsectively.
-          click_method = "clickfinger";
-          clickfinger_button_map = "lrm";
+        gaps = {
+          inner = 12;
 
-          # Enables tap-to-click, using the same finger mapping as above.
-          tap = "enabled";
-          tap_button_map = "lrm";
+          smartGaps = "on";
+          smartBorders = "on";
         };
-      };
 
-      keybindings =
-        let
+        input = {
+          # Use caps as escape on caterpie's built-in keyboard.
+          "1:1:AT_Translated_Set_2_keyboard" = {
+            xkb_options = "caps:escape";
+          };
+
+          "type:touchpad" = {
+            # "Clickfinger" settings allow you to use one/two/three
+            # fingers to do a left/right/middle click, repsectively.
+            click_method = "clickfinger";
+            clickfinger_button_map = "lrm";
+
+            # Enables tap-to-click, using the same finger mapping as above.
+            tap = "enabled";
+            tap_button_map = "lrm";
+          };
+        };
+
+        keybindings = let
           brightness = "${pkgs.brightnessctl}/bin/brightnessctl --class backlight --exponent=3 --min-value=8000 set";
           pamixer = "${pkgs.pamixer}/bin/pamixer";
           playerctl = "${pkgs.playerctl}/bin/playerctl";
         in
-        lib.mkOptionDefault (
-          workspaceBindings
-          // {
-            "${modifier}+l" = "exec loginctl lock-session";
-            "${modifier}+p" = "exec ${powerMenu}";
+          lib.mkOptionDefault (
+            workspaceBindings
+            // {
+              "${modifier}+l" = "exec loginctl lock-session";
+              "${modifier}+p" = "exec ${powerMenu}";
 
-            "XF86AudioLowerVolume" = "exec ${pamixer} --decrease 1";
-            "XF86AudioMute" = "exec ${pamixer} --toggle-mute";
-            "XF86AudioRaiseVolume" = "exec ${pamixer} --increase 1";
+              "XF86AudioLowerVolume" = "exec ${pamixer} --decrease 1";
+              "XF86AudioMute" = "exec ${pamixer} --toggle-mute";
+              "XF86AudioRaiseVolume" = "exec ${pamixer} --increase 1";
 
-            "XF86AudioPlay" = "exec ${playerctl} play-pause";
-            "XF86AudioNext" = "exec ${playerctl} next";
-            "XF86AudioPrev" = "exec ${playerctl} previous";
+              "XF86AudioPlay" = "exec ${playerctl} play-pause";
+              "XF86AudioNext" = "exec ${playerctl} next";
+              "XF86AudioPrev" = "exec ${playerctl} previous";
 
-            "XF86MonBrightnessDown" = "exec ${brightness} 3.25%-";
-            "XF86MonBrightnessUp" = "exec ${brightness} +3.25%";
-          }
-        );
+              "XF86MonBrightnessDown" = "exec ${brightness} 3.25%-";
+              "XF86MonBrightnessUp" = "exec ${brightness} +3.25%";
+            }
+          );
 
-      # Runs a wmenu prompt with:
-      #  - A font setting of Input Mono Regular, 12pt.
-      #  - 8 lines of suggestions.
-      #  - The prompt "Launch:".
-      #  - Using Solarized color codes:
-      #     - Normal and selected background: base03
-      #     - Normal and prompt foreground: base2
-      #     - Prompt background: base01
-      #     - Selected foreground: green
-      menu = "${wmenu-run} -p 'Launch:' -l 8";
+        # Runs a wmenu prompt with:
+        #  - A font setting of Input Mono Regular, 12pt.
+        #  - 8 lines of suggestions.
+        #  - The prompt "Launch:".
+        #  - Using Solarized color codes:
+        #     - Normal and selected background: base03
+        #     - Normal and prompt foreground: base2
+        #     - Prompt background: base01
+        #     - Selected foreground: green
+        menu = "${wmenu-run} -p 'Launch:' -l 8";
 
-      output =
-        let
+        output = let
           background = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Path/contents/images/2560x1600.jpg fill";
           caterpieDisplay = {
             inherit background;
@@ -206,8 +201,7 @@ with solarized;
             allow_tearing = "yes";
             scale = "1.6";
           };
-        in
-        {
+        in {
           "LG Electronics 27GN950 101NTMXE1251" = {
             inherit background;
             adaptive_sync = "on";
@@ -220,15 +214,15 @@ with solarized;
           "BOE NE135A1M-NY1 Unknown" = caterpieDisplay;
         };
 
-      terminal = "ghostty";
+        terminal = "ghostty";
 
-      window = {
-        border = 2;
-        titlebar = false;
+        window = {
+          border = 2;
+          titlebar = false;
+        };
       };
-    };
 
-    systemd.xdgAutostart = true;
-    wrapperFeatures.gtk = true;
-  };
-}
+      systemd.xdgAutostart = true;
+      wrapperFeatures.gtk = true;
+    };
+  }

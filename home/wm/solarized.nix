@@ -17,5 +17,4 @@
   red = "f23749";
   violet = "7d80d1";
   yellow = "ac8300";
-
 }

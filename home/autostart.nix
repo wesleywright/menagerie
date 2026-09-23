@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   config.xdg.configFile = {
     # Start Discord in tray, so that I can access it quickly (and receive
     # notifications) without a window popping up intrusively.

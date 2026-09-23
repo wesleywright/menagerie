@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   # These custom rules fix some annoying behaviors I've found:
   #
   # 1. My USB hub causes Linux to wake from sleep immediately for some reason.
