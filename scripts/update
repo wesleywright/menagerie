@@ -6,5 +6,4 @@ REPOROOT="$(git rev-parse --show-toplevel)"
 
 set -x
 nix flake update --flake "$REPOROOT"
-home-manager switch --flake "$REPOROOT"
 sudo nixos-rebuild switch --flake "$REPOROOT"
