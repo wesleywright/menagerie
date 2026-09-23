@@ -45,7 +45,7 @@ let
       *Suspend) systemctl suspend ;;
       *"Log out") confirm "log out" && swaymsg exit ;;
       *Reboot) confirm "reboot" && systemctl reboot ;;
-      *Poweroff) confirm "shutdown" && systemctl poweroff ;;
+      *Shutdown) confirm "shutdown" && systemctl poweroff ;;
     esac
   '';
 
