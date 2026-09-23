@@ -12,7 +12,6 @@
     ./music.nix
     ./nixpkgs.nix
     ./office.nix
-    ./plasma
     ./ssh.nix
     ./terminal.nix
     ./utilities
