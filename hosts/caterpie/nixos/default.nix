@@ -2,6 +2,7 @@
   imports = [
     ./backlight.nix
     ./hardware-configuration.nix
+    ./power.nix
   ];
 
   # This option defines the first version of NixOS you have installed on this particular machine,
