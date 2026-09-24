@@ -23,9 +23,7 @@ def read_battery_charge(path: Path) -> int:
 
 
 def get_battery_percent(directory: Path) -> int:
-    charge_now = read_battery_charge(directory / "charge_now")
-    charge_full = read_battery_charge(directory / "charge_full")
-    return 100 * charge_now // charge_full
+    return int((directory / "capacity").read_text().strip())
 
 
 def format_current_time() -> str:
