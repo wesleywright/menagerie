@@ -50,6 +50,8 @@ in {
         ];
         # Update backup status to journal once per minute
         progressFps = 0.016666;
+
+        runCheck = true;
       };
     };
   };
