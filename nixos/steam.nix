@@ -9,6 +9,7 @@
     text = ''
       env LD_PRELOAD="" PROTON_ENABLE_WAYLAND=1 \
         ${pkgs.gamemode}/bin/gamemoderun \
+        ${pkgs.mangohud}/bin/mangohud \
         "$@"
     '';
   };
