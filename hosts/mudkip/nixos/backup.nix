@@ -22,10 +22,19 @@
     "/mnt/audiobooks"
     "/mnt/music"
   ];
+
+  backupTimestampPath = "/var/run/naptime/backups/last-success";
 in {
   services.restic = {
     backups = {
       primary = {
+        backupCleanupCommand = "${pkgs.writeShellScript "write-backup-timestamp" ''
+          if [[ "$SERVICE_RESULT" == "success" ]]; then
+            mkdir -p "$(dirname "${backupTimestampPath}")"
+            date --rfc-3339=second >"${backupTimestampPath}"
+          fi
+        ''}";
+
         dynamicFilesFrom = lib.escapeShellArgs (["${list-files-to-backup}"] ++ directoriesToBackup);
 
         environmentFile = "/etc/naptime/backups/credentials.env";
