@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./backup.nix
     ./dpi.nix
     ./filesystems.nix
     ./hardware-configuration.nix
