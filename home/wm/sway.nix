@@ -52,7 +52,9 @@
   '';
 
   barStatusCommand = pkgs.writers.writePython3 "sway-status-command" {} (
-    builtins.readFile ./sway-status-command.py
+    pkgs.replaceVars ./sway-status-command.py {
+      criticalColor = "#${solarized.red}";
+    }
   );
 in
   with solarized; {
