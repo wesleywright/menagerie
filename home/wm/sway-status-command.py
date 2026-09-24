@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta, UTC
+from datetime import datetime, UTC
 import json
 from pathlib import Path
 import subprocess
@@ -102,16 +102,15 @@ def get_last_backup_status() -> str | None:
 
     timestamp = datetime.fromisoformat(path.read_text().strip())
     now = datetime.now(tz=UTC).astimezone(timestamp.tzinfo)
-    day_difference = (now.date() - timestamp.date()).days
+    days_since_backup = (now.date() - timestamp.date()).days
 
-    if (now - timestamp) < timedelta(hours=1):
-        summary = "just now"
-    elif day_difference == 0:
-        summary = "today"
-    elif day_difference == 1:
+    if days_since_backup == 0:
+        return ""
+
+    if days_since_backup == 1:
         summary = "yesterday"
     else:
-        summary = critical(f"{day_difference} days ago")
+        summary = critical(f"{days_since_backup} days ago")
     return f"Last backup: {summary}"
 
 
@@ -119,7 +118,7 @@ def main() -> None:
     status = StatusMonitor()
 
     status.register(command=count_failed_systemd_units, tick_interval=30)
-    status.register(command=get_last_backup_status, tick_interval=300)
+    status.register(command=get_last_backup_status, tick_interval=60)
     status.register(command=get_battery_percent, tick_interval=10)
     status.register(command=format_current_time, tick_interval=1)
 
