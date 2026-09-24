@@ -7,14 +7,8 @@
   rungame = pkgs.writeShellApplication {
     name = "rungame";
     text = ''
-      env LD_PRELOAD="" \
+      env LD_PRELOAD="" PROTON_ENABLE_WAYLAND=1 \
         ${pkgs.gamemode}/bin/gamemoderun \
-        ${pkgs.gamescope}/bin/gamescope \
-          --adaptive-sync \
-          --fullscreen \
-          --rt \
-          --max-scale 1 \
-          --expose-wayland \
         "$@"
     '';
   };
