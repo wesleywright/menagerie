@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, UTC
+from datetime import datetime, timedelta, UTC
 import json
 from pathlib import Path
 import subprocess
 from sys import stdout
-from time import sleep
+from time import monotonic, sleep
 from typing import Callable
 
 CRITICAL_COLOR = "@criticalColor@"
@@ -17,42 +17,51 @@ SEPARATOR = " · "
 @dataclass(frozen=True, kw_only=True)
 class StatusMonitorEntry:
     command: Callable[[], str | None]
-    tick_interval: int
+    interval: timedelta
+
+
+@dataclass(frozen=True, kw_only=True)
+class StatusMonitorOutput:
+    content: str
+    last_processed_at: float
 
 
 class StatusMonitor:
     def __init__(self):
         self._entries = []
-        self._ticks = 0
-        self._items = []
+        self._outputs = []
 
     def register(
         self,
         *,
         command: Callable[[], str | None],
-        tick_interval: int,
+        interval: timedelta,
     ) -> None:
         self._entries.append(StatusMonitorEntry(
             command=command,
-            tick_interval=tick_interval,
+            interval=interval,
         ))
-        self._items.append("")
+        self._outputs.append(StatusMonitorOutput(
+            content="",
+            last_processed_at=0.0,
+        ))
 
     def tick(self) -> str:
+        now = monotonic()
         for i, entry in enumerate(self._entries):
-            if self._ticks % entry.tick_interval != 0:
+            elapsed = timedelta(
+                seconds=now - self._outputs[i].last_processed_at,
+            )
+            if elapsed < entry.interval:
                 continue
-            result = entry.command()
-            if result is None:
-                continue
-            self._items[i] = result
-
-        self._ticks += 1
+            content = entry.command() or ""
+            self._outputs[i] = StatusMonitorOutput(
+                content=content,
+                last_processed_at=now,
+            )
 
         return SEPARATOR.join(
-            item
-            for item in self._items
-            if item is not None and len(item) > 0
+            output.content for output in self._outputs if output.content
         )
 
 
@@ -90,7 +99,7 @@ def count_failed_systemd_units() -> str | None:
         if count > 0:
             counts[kind] = count
     if len(counts) == 0:
-        return ""
+        return None
     summary = ", ".join(f"{count} {kind}" for kind, count in counts.items())
     return critical(f"Detected failed systemd units ({summary})")
 
@@ -105,7 +114,7 @@ def get_last_backup_status() -> str | None:
     days_since_backup = (now.date() - timestamp.date()).days
 
     if days_since_backup == 0:
-        return ""
+        return None
 
     if days_since_backup == 1:
         summary = "yesterday"
@@ -117,15 +126,26 @@ def get_last_backup_status() -> str | None:
 def main() -> None:
     status = StatusMonitor()
 
-    status.register(command=count_failed_systemd_units, tick_interval=30)
-    status.register(command=get_last_backup_status, tick_interval=60)
-    status.register(command=get_battery_percent, tick_interval=10)
-    status.register(command=format_current_time, tick_interval=1)
+    status.register(
+        command=count_failed_systemd_units,
+        interval=timedelta(seconds=30),
+    )
+    status.register(
+        command=get_last_backup_status,
+        interval=timedelta(minutes=1),
+    )
+    status.register(
+        command=get_battery_percent,
+        interval=timedelta(seconds=10),
+    )
+    status.register(
+        command=format_current_time,
+        interval=timedelta(seconds=0.9),
+    )
 
     while True:
         stdout.write(status.tick())
         stdout.write("\n")
-        stdout.flush()
         stdout.flush()
         sleep(1)
 
