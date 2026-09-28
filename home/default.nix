@@ -5,6 +5,7 @@
     ./direnv.nix
     ./editors.nix
     ./fish.nix
+    ./gaming.nix
     ./git.nix
     ./music.nix
     ./nixpkgs.nix
