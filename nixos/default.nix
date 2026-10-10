@@ -11,6 +11,7 @@
     ./locale.nix
     ./networking.nix
     ./nix.nix
+    ./power.nix
     ./security.nix
     ./ssh.nix
     ./steam.nix
