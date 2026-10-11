@@ -1,6 +1,5 @@
 {pkgs, ...}: {
   imports = [
-    ./fnott.nix
     ./sway.nix
   ];
 
