@@ -54,6 +54,8 @@
   barStatusCommand = pkgs.writers.writePython3 "sway-status-command" {} (
     pkgs.replaceVars ./sway-status-command.py {
       criticalColor = "#${solarized.red}";
+      systemctl = "${pkgs.systemd}/bin/systemctl";
+      playerctl = "${pkgs.playerctl}/bin/playerctl";
     }
   );
 in

@@ -9,7 +9,21 @@ from sys import stdout
 from time import monotonic, sleep
 from typing import Callable
 
-CRITICAL_COLOR = "@criticalColor@"
+
+def injected(key: str) -> str:
+    if key.startswith("@"):
+        return key[1:-1]
+    return key
+
+
+CRITICAL_COLOR = injected("@criticalColor@")
+SYSTEMCTL = injected(
+    "@systemctl@"
+)
+PLAYERCTL = injected(
+    "@playerctl@"
+)
+
 POWER_SUPPLY_DIRECTORY = Path("/sys/class/power_supply")
 SEPARATOR = " · "
 
@@ -87,7 +101,7 @@ def count_failed_systemd_units() -> str | None:
     for kind in "user", "system":
         try:
             raw = subprocess.check_output([
-                "systemctl",
+                SYSTEMCTL,
                 f"--{kind}",
                 "list-units",
                 "--state=failed",
@@ -123,6 +137,24 @@ def get_last_backup_status() -> str | None:
     return f"Last backup: {summary}"
 
 
+def now_playing() -> str | None:
+    output = subprocess.check_output(
+        [
+            PLAYERCTL,
+            "metadata",
+            "--format",
+            "{{status}}:\"{{title}}\" by {{artist}} from {{album}}",
+        ],
+        text=True,
+    )
+    if not output:
+        return None
+    status, metadata = output.strip().split(':', maxsplit=1)
+    if status != "Playing":
+        return None
+    return metadata
+
+
 def main() -> None:
     status = StatusMonitor()
 
@@ -133,6 +165,10 @@ def main() -> None:
     status.register(
         command=get_last_backup_status,
         interval=timedelta(minutes=1),
+    )
+    status.register(
+        command=now_playing,
+        interval=timedelta(seconds=5.0),
     )
     status.register(
         command=get_battery_percent,
