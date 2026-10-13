@@ -123,6 +123,22 @@
           enabled = true,
         },
       })
+
+      -- !! Finding files/&c.
+      local telescope_actions = require("telescope.actions")
+      local telescope_builtin = require("telescope.builtin")
+      require("telescope").setup({
+        defaults = {
+          mappings = {
+            i = {
+              ["<esc>"] = telescope_actions.close,
+            },
+          },
+        },
+      })
+
+      -- Copy VS Code's "file palette" keybinding
+      vim.keymap.set("n", "<C-p>", telescope_builtin.find_files)
     '';
 
     plugins = with pkgs.vimPlugins; [
@@ -148,6 +164,9 @@
       # Popular autocomplete plugin. The configuration defaults are pretty sensible; I don't want
       # to spend too much time tweaking things like this.
       blink-cmp
+
+      # Feature rich UI for finding things (files, regular expressions, &c.).
+      telescope-nvim
     ];
 
     # New defaults as of 26.05, set explicitly to silence
