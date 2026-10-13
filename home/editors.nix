@@ -103,6 +103,24 @@
           },
         },
       })
+
+      -- !! Autocomplete & related menus
+      require("blink-cmp").setup({
+        completion = {
+          documentation = {
+            auto_show = true,
+          },
+        },
+        fuzzy = {
+          implementation = "rust",
+        },
+        keymap = {
+          preset = "super-tab",
+        },
+        signature = {
+          enabled = true,
+        },
+      })
     '';
 
     plugins = with pkgs.vimPlugins; [
@@ -124,6 +142,10 @@
 
       # This is the best-looking Solarized theme I have found that works with neovim as of Feb 2026.
       vim-solarized8
+
+      # Popular autocomplete plugin. The configuration defaults are pretty sensible; I don't want
+      # to spend too much time tweaking things like this.
+      blink-cmp
     ];
 
     # New defaults as of 26.05, set explicitly to silence
