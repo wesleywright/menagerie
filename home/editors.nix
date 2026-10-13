@@ -20,10 +20,12 @@
 
       " Automatically save the current buffer when another buffer is selected *or* when neovim loses
       " focus.
+      set autowrite
+      set autowriteall
       augroup autosave_buffer
         au!
-        au BufLeave * :w
-        au FocusLost * :w
+        au BufLeave * :update
+        au FocusLost * :update
       augroup END
 
       set ruler
