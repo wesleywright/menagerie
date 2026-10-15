@@ -138,21 +138,28 @@ def get_last_backup_status() -> str | None:
 
 
 def now_playing() -> str | None:
-    output = subprocess.check_output(
-        [
-            PLAYERCTL,
-            "metadata",
-            "--format",
-            "{{status}}:\"{{title}}\" by {{artist}} from {{album}}",
-        ],
+    result = subprocess.run(
+        [PLAYERCTL, "status"],
+        capture_output=True,
         text=True,
     )
-    if not output:
+    if result.returncode != 0 or result.stdout.strip() != "Playing":
         return None
-    status, metadata = output.strip().split(':', maxsplit=1)
-    if status != "Playing":
-        return None
-    return metadata
+
+    try:
+        output = subprocess.check_output(
+            [
+                PLAYERCTL,
+                "metadata",
+                "--format",
+                "\"{{title}}\" by {{artist}} from {{album}}",
+            ],
+            text=True,
+        )
+    except Exception as exception:
+        return critical(f"failed to get now playing: {exception}")
+
+    return output.strip()
 
 
 def main() -> None:
