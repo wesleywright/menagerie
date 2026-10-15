@@ -146,20 +146,29 @@ def now_playing() -> str | None:
     if result.returncode != 0 or result.stdout.strip() != "Playing":
         return None
 
+    separator = "[separator]"
     try:
         output = subprocess.check_output(
             [
                 PLAYERCTL,
                 "metadata",
                 "--format",
-                "\"{{title}}\" by {{artist}} from {{album}}",
+                separator.join(["{{title}}", "{{artist}}", "{{album}}"]),
             ],
             text=True,
         )
+        title, artist, album = output.strip().split("[separator]")
     except Exception as exception:
         return critical(f"failed to get now playing: {exception}")
 
-    return output.strip()
+    if title and artist and album:
+        return f"\"{title}\" by {artist} from {album}"
+    elif title and artist:
+        return f"\"{title}\" by {artist}"
+    elif title:
+        return title
+    else:
+        return None
 
 
 def main() -> None:
