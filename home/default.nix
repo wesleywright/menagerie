@@ -8,6 +8,7 @@
     ./gaming.nix
     ./git.nix
     ./music.nix
+    ./networking.nix
     ./nixpkgs.nix
     ./office.nix
     ./ssh.nix
