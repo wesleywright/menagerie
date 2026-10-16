@@ -1,11 +1,5 @@
 {...}: {
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
-      PermitRootLogin = "no";
-      AllowUsers = ["naptime"];
-    };
-  };
+  # Explicitly disable SSH. This is the default; this file exists as a sanity
+  # in case it is accidentally overwritten elsewhere.
+  services.openssh = {enable = false;};
 }
