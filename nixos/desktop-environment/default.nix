@@ -23,11 +23,18 @@
 
   services = {
     displayManager = {
+      # Since all of my devices use LUKS, secureboot, and an EFI password, it's
+      # safe to log in to my user automatically. This makes the boot process
+      # more convenient.
       autoLogin = {
         enable = true;
         user = "naptime";
       };
+
       defaultSession = "sway";
+
+      # Prefer using GDM specifically due to its ability to unlock
+      # gnome-keyring with the LUKS password.
       gdm.enable = true;
     };
     xserver.enable = true;
