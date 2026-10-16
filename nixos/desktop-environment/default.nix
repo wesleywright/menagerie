@@ -1,23 +1,35 @@
 {pkgs, ...}: {
-  programs.gtklock = {
-    enable = true;
-    config = {
-      main = {
-        background = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Path/contents/images/2560x1600.jpg";
-        date-format = "%T";
-        time-format = "%F";
+  programs = {
+    gtklock = {
+      enable = true;
+      config = {
+        main = {
+          background = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Path/contents/images/2560x1600.jpg";
+          date-format = "%T";
+          time-format = "%F";
+        };
       };
+      modules = [
+        pkgs.gtklock-powerbar-module
+      ];
+      style = builtins.readFile ./gtklock.css;
     };
-    modules = [
-      pkgs.gtklock-powerbar-module
-    ];
-    style = builtins.readFile ./gtklock.css;
-  };
-  programs.sway = {
-    enable = true;
-    extraPackages = [];
+
+    sway = {
+      enable = true;
+      extraPackages = [];
+    };
   };
 
-  services.displayManager.sddm.enable = true;
-  services.xserver.enable = true;
+  services = {
+    displayManager = {
+      autoLogin = {
+        enable = true;
+        user = "naptime";
+      };
+      defaultSession = "sway";
+      gdm.enable = true;
+    };
+    xserver.enable = true;
+  };
 }

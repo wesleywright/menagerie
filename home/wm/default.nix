@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   imports = [
+    ./network-manager.nix
     ./sway.nix
   ];
 
@@ -12,8 +13,6 @@
   ];
 
   services = {
-    network-manager-applet.enable = true;
-
     # Needed by waybar for getting currently playing status.
     playerctld.enable = true;
 
