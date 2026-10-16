@@ -2,7 +2,7 @@
   gtk = {
     enable = true;
     iconTheme = {
-      name = "breeze";
+      name = "breeze-dark";
       package = pkgs.kdePackages.breeze-icons;
     };
   };

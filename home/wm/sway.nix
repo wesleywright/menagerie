@@ -50,14 +50,6 @@
       *Shutdown) confirm "shutdown" && systemctl poweroff ;;
     esac
   '';
-
-  barStatusCommand = pkgs.writers.writePython3 "sway-status-command" {} (
-    pkgs.replaceVars ./sway-status-command.py {
-      criticalColor = "#${solarized.red}";
-      systemctl = "${pkgs.systemd}/bin/systemctl";
-      playerctl = "${pkgs.playerctl}/bin/playerctl";
-    }
-  );
 in
   with solarized; {
     wayland.windowManager.sway = {
@@ -78,37 +70,10 @@ in
           ];
         };
 
-        bars = [
-          {
-            inherit fonts;
-
-            position = "top";
-            statusCommand = "${barStatusCommand}";
-            trayPadding = 8;
-
-            extraConfig = ''
-              height 32
-            '';
-
-            colors = let
-              workspaceColors = text: {
-                background = "#${base03}";
-                border = "#${base03}";
-                text = "#${text}";
-              };
-            in {
-              background = "#${base03}";
-              separator = "#${base0}";
-              statusline = "#${base0}";
-              focusedStatusline = "#${base1}";
-
-              focusedWorkspace = workspaceColors green;
-              activeWorkspace = workspaceColors base2;
-              inactiveWorkspace = workspaceColors base1;
-              urgentWorkspace = workspaceColors orange;
-            };
-          }
-        ];
+        # Disable swaybar in favor of waybar (which is configured to run as a
+        # systemd user service in waybar.nix rather than being launched via
+        # Sway)
+        bars = [];
 
         colors = let
           makeClass = foreground: background: {

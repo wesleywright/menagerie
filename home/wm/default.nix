@@ -2,6 +2,7 @@
   imports = [
     ./network-manager.nix
     ./sway.nix
+    ./waybar.nix
   ];
 
   home.packages = [

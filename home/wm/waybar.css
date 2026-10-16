@@ -1,0 +1,92 @@
+@define-color base03 #@base03@;
+@define-color base02 #@base02@;
+@define-color base01 #@base01@;
+@define-color base00 #@base00@;
+@define-color base0 #@base0@;
+@define-color base1 #@base1@;
+@define-color base2 #@base2@;
+@define-color base3 #@base3@;
+@define-color yellow #@yellow@;
+@define-color orange #@orange@;
+@define-color red #@red@;
+@define-color magenta #@magenta@;
+@define-color violet #@violet@;
+@define-color blue #@blue@;
+@define-color cyan #@cyan@;
+@define-color green #@green@;
+
+@define-color bg @base03;
+@define-color active @base01;
+@define-color text @base1;
+@define-color highlight @green;
+
+window#waybar, menu {
+  background-color: @bg;
+  color: @text;
+
+  font-family: "Input Mono";
+  font-size: 12pt;
+}
+
+.modules-left {
+  padding-left: 0.25em;
+}
+.modules-right {
+  padding-right: 0.25em;
+}
+
+.module {
+  padding: 0 0.25em;
+}
+
+button {
+  border: none;
+  border-radius: 0;
+  color: @text;
+  font-weight: inherit;
+}
+
+button:hover {
+  background: inherit;
+  box-shadow: inherit;
+  color: inherit;
+  text-shadow: none;
+}
+
+#workspaces button.focused, #workspaces button.active {
+  color: @highlight;
+}
+
+#workspaces button {
+  padding-left: 0;
+  padding-right: 0.7em;
+}
+
+#privacy-item {
+  padding: 0 0.5em;
+}
+
+#privacy-item.audio-in {
+  color: @yellow;
+}
+
+#privacy-item.audio-out {
+  color: @magenta;
+}
+
+#privacy-item.screenshare {
+  color: @cyan;
+}
+
+#privacy-item.location {
+  color: @red;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+}
+
