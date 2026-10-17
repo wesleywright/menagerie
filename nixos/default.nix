@@ -3,6 +3,7 @@
     ./1password.nix
     ./audio.nix
     ./boot.nix
+    ./containers
     ./desktop-environment
     ./fonts.nix
     ./flatpak.nix
@@ -14,6 +15,7 @@
     ./power.nix
     ./security.nix
     ./ssh.nix
+    ./sleepover
     ./steam.nix
     ./udev.nix
     ./users.nix
